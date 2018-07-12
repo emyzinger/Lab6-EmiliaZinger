@@ -29,26 +29,40 @@ public class FixedArrayQueue<E> implements SimpleQueue<E> {
 
   @Override
   public boolean offer(final E obj) {
-    // TODO
-    return false;
+    if (size == capacity){
+      return false;
+    }
+    size++;
+    rear = (rear +1) % capacity;
+    data[rear] = obj;
+    return true;
   }
 
   @Override
   public E peek() {
-    // TODO
-    return null;
+    if (size == 0){
+      return null;
+    }
+    return data[front];
   }
 
   @Override
   public E poll() {
-    // TODO
-    return null;
+    if (size == 0){
+      return null;
+    }
+    E result = data[front];
+    front = (front +1) % capacity;
+    size --;
+    return result;
   }
 
   @Override
   public boolean isEmpty() {
-    // TODO
-    return true;
+    if (size == 0) {
+      return true;
+    }
+    return false;
   }
 
   @Override
@@ -58,7 +72,16 @@ public class FixedArrayQueue<E> implements SimpleQueue<E> {
 
   @Override
   public List<E> asList() {
-    // TODO implement using an ArrayList preallocated with the right size
-    return Arrays.asList();
+    ArrayList myArray = new ArrayList(size);
+    if(size == 0){
+      return myArray;
+    }
+    int location = front;
+    do {
+      myArray.add(data[location]);
+      location = (location+1) % capacity;
+    }
+    while(location!= front);
+    return myArray;
   }
 }
